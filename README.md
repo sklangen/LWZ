@@ -5,8 +5,8 @@ CLI-Tool zum verwalten von vereinsinternen, monatlichen Turnieren.
 ## Todo
 
 - [ ] Spieler- und Saisonklasse für `season.yml` unter Nutzung vom [yaml.YAMLObject](https://pyyaml.org/wiki/PyYAMLDocumentation#constructors-representers-resolvers).
-  - [ ] `Season (mode, startYear, [players], parentSeason)`
-  - [ ] `SeasonPlayer (playerId, [names], dwz, stateOfMembership)`
+  - [X] `Season (mode, startYear, [players], parentSeason)`
+  - [X] `SeasonPlayer (playerId, [names], dwz, stateOfMembership)`
   - [ ] Hilfsfunktion zum einlesen einer Saison mit gegebenem Ordnerpfad.
   
 - [X] Mit Pip einen Argparser in den `$PATH` [installieren](https://docs.python.org/3/distutils/setupscript.html#installing-scripts), der zumindest alle [Subcommands](https://docs.python.org/dev/library/argparse.html#sub-commands) kennt, sodass `lwz --help` gefüllt ist. Implementiert muss hier noch nichts sein.

@@ -1,3 +1,4 @@
+from .Season import Season, SeasonPlayer
 import logging
 
 def init_season(directory, zps=None):

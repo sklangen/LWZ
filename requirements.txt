@@ -1,0 +1,2 @@
+fidetournament
+PyYAML

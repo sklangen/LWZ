@@ -1,3 +1,65 @@
 #!/usr/bin/env python3
 
-print('Hello, LWZ!')
+from datetime import datetime
+import argparse
+import calendar
+import logging
+import lwz
+import os
+import sys
+
+
+parser = argparse.ArgumentParser(
+    prog='lwz', 
+    description='CLI-Tool to manage clubintern, monthly tournaments'
+)
+parser.add_argument('-D', '--directory', type=str, default='.',
+    help='Directory with season.yml in it. Default is the current working directory')
+parser.add_argument('-V', '--verbose', action='store_true',
+    help='Use debug loglevel')
+parser.set_defaults(func=None)
+subparsers = parser.add_subparsers()
+
+parser_init = subparsers.add_parser('init', help='Generate a boilerplate season.yml')
+parser_init.add_argument('-z', '--zps', type=str,
+    help='If set, query the dsb api for all players in that club and add them to the season.yml')
+parser_init.set_defaults(func=lwz.init_season)
+
+parser_import = subparsers.add_parser('import', help='Import a tournament from a variety of sources')
+parser_import.add_argument('-s', '--source',
+    choices=('lichess', 'chesscom', 'swiss'), default='lichess',
+    help='Source to import from. Lichess is default')
+parser_import.add_argument('-m', '--month',
+    choices=calendar.month_abbr[1:], default=datetime.now().strftime('%b'),
+    help='Month of the tournament to import. Default is the current month')
+parser_import.add_argument('-r', '--rounds', type=int,
+    help='If set, number of rounds is set to the given value. Otherwise the number of rounds is evaluated by the mode specified in the season.yml')
+parser_import.add_argument('-n', '--names', action='store_true', 
+    help='If true, replace all player names with their id')
+parser_import.add_argument('tournament', help='ID or path (based on --type) of to the tournament to import')
+parser_import.set_defaults(func=lwz.import_tournament)
+
+parser_html = subparsers.add_parser('html', help='Generate html files of the given seasons into --directory')
+parser_html.add_argument('seasons', help='Seasons to make html for', nargs='+')
+parser_html.set_defaults(func=lwz.build_html)
+
+
+def main():
+    args = parser.parse_args()
+    kwargs = vars(args)
+
+    if args.func is None:
+        parser.print_usage()
+        sys.exit(1)
+
+    logging.basicConfig(
+        level=logging.DEBUG if kwargs.pop('verbose') else logging.INFO,
+        format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+    )
+
+    kwargs.pop('func')(**kwargs)
+    
+
+if __name__ == '__main__':
+    main()

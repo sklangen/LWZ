@@ -1,13 +1,9 @@
 from unittest import TestCase
 from lwz import *
-import os
-import yaml
 
 class SeasonTest(TestCase):
 
     def test(self):
-        filename = os.path.join(os.path.dirname(__file__), 'data', 'season.yml')
-
         player = SeasonPlayer(
             id='deadbeef',
             names=['Osh', 'Oshgnacknak', 'Osh Gnackank'],
@@ -20,15 +16,16 @@ class SeasonTest(TestCase):
             players=[player],
         )
 
-        with open(filename, 'w') as f:
-            yaml.safe_dump(season, f, sort_keys=False)
+        path = os.path.join(os.path.dirname(__file__), 'data')
+        directory = SeasonDirectory(path, season)
 
-        with open(filename) as f:
-            season = yaml.safe_load(f)
+        directory.dump_season()
+        season = directory.load_season()
 
         self.assertIsInstance(season, Season)
         self.assertEqual(season.mode, 'KIDS')
         self.assertEqual(season.startYear, 2020)
+        self.assertEqual(season.endYear, 2021)
         self.assertIsNone(season.parentSeason)
         self.assertEqual(len(season.players), 1)
 

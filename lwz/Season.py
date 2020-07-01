@@ -1,3 +1,5 @@
+from dataclasses import dataclass, field
+from typing import List
 import yaml
 
 
@@ -9,30 +11,37 @@ class MyYAMLObject(yaml.YAMLObject):
  
     @classmethod
     def to_yaml(cls, dumper, data):
-        return dumper.represent_mapping(cls.yaml_tag, vars(data))
+        return dumper.represent_mapping(cls.yaml_tag(), vars(data))
+
+    @classmethod
+    def yaml_tag(cls):
+        return u'!' + cls.__name__
 
 
+@dataclass
 class SeasonPlayer(MyYAMLObject):
-    yaml_tag = u'!SeasonPlayer'
+    '''Represating a player participating in a season'''
 
-    def __init__(self, id, dwz=0, stateOfMembership='MEMBER', names=None):
-        self.id = id
-        self.dwz = dwz
-        self.stateOfMembership = stateOfMembership
-        self.names = names or []
+    id: str
+    dwz: int = 0
+    stateOfMembership: str = 'MEMBER'
+    names: List[str] = field(default_factory=list)
 
 
+@dataclass
 class Season(MyYAMLObject):
-    yaml_tag = u'!Season'
+    '''Represating a season of monthly tournaments played from May, startYear to April, endYear'''
 
-    def __init__(self, mode, startYear, parentSeason=None, players=None):
-        print('PLAYERS', players)
-        self.mode = mode
-        self.startYear = startYear
-        self.parentSeason = parentSeason
-        self.players = players or []
+    mode: str
+    startYear: int
+    parentSeason: str = None
+    players: List[SeasonPlayer] = field(default_factory=list)
+
+    @property
+    def endYear(self):
+        return self.startYear+1
 
 
 for cls in MyYAMLObject.__subclasses__():
     yaml.SafeDumper.add_multi_representer(cls, cls.to_yaml)
-    yaml.SafeLoader.add_constructor(cls.yaml_tag, cls.from_yaml)
+    yaml.SafeLoader.add_constructor(cls.yaml_tag(), cls.from_yaml)

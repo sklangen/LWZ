@@ -1,5 +1,5 @@
 from .Season import Season, SeasonPlayer
-from fidetournament.tournament import Tournament
+from .trf import Tournament
 from typing import Dict
 import calendar
 import os

@@ -1,27 +1,38 @@
 import yaml
 
-class YAMLObject(yaml.YAMLObject):
-    def __init__(self, *args, **kwargs):
-        if len(args) > 0:
-            raise ValueError('Position argument are not supported')
-        self.__setstate__(kwargs)
+
+class MyYAMLObject(yaml.YAMLObject):
+    @classmethod
+    def from_yaml(cls, loader, node):
+        data = loader.construct_mapping(node, deep=True)
+        return cls(**data)
+ 
+    @classmethod
+    def to_yaml(cls, dumper, data):
+        return dumper.represent_mapping(cls.yaml_tag, vars(data))
 
 
-class SeasonPlayer(YAMLObject):
+class SeasonPlayer(MyYAMLObject):
     yaml_tag = u'!SeasonPlayer'
 
-    def __setstate__(self, d):
-        self.id = d['id']
-        self.dwz = d.get('dwz', 0)
-        self.stateOfMembership = d.get('stateOfMembership', 'MEMBER')
-        self.names = d['names']
+    def __init__(self, id, dwz=0, stateOfMembership='MEMBER', names=None):
+        self.id = id
+        self.dwz = dwz
+        self.stateOfMembership = stateOfMembership
+        self.names = names or []
 
 
-class Season(YAMLObject):
+class Season(MyYAMLObject):
     yaml_tag = u'!Season'
 
-    def __setstate__(self, d):
-        self.mode = d['mode']
-        self.startYear = d['startYear']
-        self.parentSeason = d.get('parentSeason')
-        self.players = d.get('players', [])
+    def __init__(self, mode, startYear, parentSeason=None, players=None):
+        print('PLAYERS', players)
+        self.mode = mode
+        self.startYear = startYear
+        self.parentSeason = parentSeason
+        self.players = players or []
+
+
+for cls in MyYAMLObject.__subclasses__():
+    yaml.SafeDumper.add_multi_representer(cls, cls.to_yaml)
+    yaml.SafeLoader.add_constructor(cls.yaml_tag, cls.from_yaml)

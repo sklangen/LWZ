@@ -21,10 +21,10 @@ class SeasonTest(TestCase):
         )
 
         with open(filename, 'w') as f:
-            yaml.dump(season, f, sort_keys=False)
+            yaml.safe_dump(season, f, sort_keys=False)
 
         with open(filename) as f:
-            season = yaml.load(f, Loader=yaml.Loader)
+            season = yaml.safe_load(f)
 
         self.assertIsInstance(season, Season)
         self.assertEqual(season.mode, 'KIDS')

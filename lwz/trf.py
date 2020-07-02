@@ -84,7 +84,7 @@ def _dump_player(fp, player):
     fp.write('001')
     fp.write(f' {player.startrank:>4}')
     fp.write(f' {player.sex:1}')
-    fp.write(f' {player.title:<2}')
+    fp.write(f' {player.title:>2}')
     fp.write(f' {player.name:<33}')
     fp.write(f' {player.fide:>4}')
     fp.write(f' {player.fed:<3}')
@@ -94,8 +94,7 @@ def _dump_player(fp, player):
     fp.write(f' {player.rank:>4}')
 
     for opponent in player.opponents:
-        print(opponent)
-        fp.write(' {id:>4} {color:1} {result:1}'.format(**opponent))
+        fp.write('  {id:>4} {color:1} {result:1}'.format(**opponent))
 
 
 def load(fp):

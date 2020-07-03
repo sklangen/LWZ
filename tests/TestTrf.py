@@ -4,6 +4,8 @@ import os
 
 class SeasonTrt(TestCase):
 
+    maxDiff = None
+
     def test_example1_chinese_whispers(self):
         self.chinese_whispers('example1')
 
@@ -50,7 +52,7 @@ class SeasonTrt(TestCase):
                 self.assertEqual(player.sex, player0.sex, f'Diff of {{player[{j}].sex}}' + itertext)
                 self.assertEqual(player.title, player0.title, f'Diff of {{player[{j}].title}}' + itertext)
                 self.assertEqual(player.name, player0.name, f'Diff of {{player[{j}].name}}' + itertext)
-                self.assertEqual(player.fide, player0.fide, f'Diff of {{player[{j}].fide}}' + itertext)
+                self.assertEqual(player.rating, player0.rating, f'Diff of {{player[{j}].rating}}' + itertext)
                 self.assertEqual(player.fed, player0.fed, f'Diff of {{player[{j}].fed}}' + itertext)
                 self.assertEqual(player.id, player0.id, f'Diff of {{player[{j}].id}}' + itertext)
                 self.assertEqual(player.birthdate, player0.birthdate, f'Diff of {{player[{j}].birthdate}}' + itertext)

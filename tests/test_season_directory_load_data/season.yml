@@ -1,0 +1,13 @@
+!Season
+mode: KIDS
+startYear: 2020
+parentSeason: null
+players:
+- !SeasonPlayer
+  id: deadbeef
+  dwz: 6789
+  stateOfMembership: MEMBER
+  names:
+  - Osh
+  - Oshgnacknak
+  - Osh Gnackank

@@ -1,9 +1,8 @@
 from unittest import TestCase
-from lwz import trf
+from lwz.trf import *
 import os
 
 class SeasonTrt(TestCase):
-
     maxDiff = None
 
     def test_example1_chinese_whispers(self):
@@ -20,18 +19,23 @@ class SeasonTrt(TestCase):
 
         with open(filename) as f:
             trf_string = f.read()
-        tour0 = trf.loads(trf_string)
-        dumped = trf.dumps(tour0)
+        tour0 = loads(trf_string)
+        dumped = dumps(tour0)
 
         for i in range(100):
             itertext = f' in iteration {i+1}'
 
-            for j, (acctual, expected) in enumerate(zip(dumped.split('\n'), trf_string.split('\n'))):
+            dumped_lines = dumped.split('\n')
+            acctual_lines = trf_string.split('\n')
+
+            self.assertEqual(len(dumped_lines), len(acctual_lines))
+            for j, (acctual, expected) in enumerate(zip(dumped_lines, acctual_lines)):
                 self.assertEqual(acctual.strip(), expected.strip(), f'Diff of line {j+1}' + itertext)
 
-            tour = trf.loads(dumped)
-            dumped = trf.dumps(tour)
+            tour = loads(dumped)
+            dumped = dumps(tour)
 
+            self.assertIsInstance(tour, Tournament)
             self.assertEqual(tour.name, tour0.name, f'Diff of {{tournament.name}}' + itertext)
             self.assertEqual(tour.city, tour0.city, f'Diff of {{tournament.city}}' + itertext)
             self.assertEqual(tour.federation, tour0.federation, f'Diff of {{tournament.federation}}' + itertext)
@@ -47,7 +51,9 @@ class SeasonTrt(TestCase):
             self.assertEqual(tour.rounddates, tour0.rounddates, f'Diff of {{tournament.rounddates}}' + itertext)
             self.assertEqual(tour.xx_fields, tour0.xx_fields, f'Diff of {{tournament.xx_fields}}' + itertext)
 
+            self.assertEqual(len(tour.players), len(tour0.players))
             for j, (player, player0) in enumerate(zip(tour.players, tour0.players)):
+                self.assertIsInstance(player, Player)
                 self.assertEqual(player.startrank, player0.startrank, f'Diff of {{player[{j}].startrank}}' + itertext)
                 self.assertEqual(player.sex, player0.sex, f'Diff of {{player[{j}].sex}}' + itertext)
                 self.assertEqual(player.title, player0.title, f'Diff of {{player[{j}].title}}' + itertext)
@@ -58,3 +64,4 @@ class SeasonTrt(TestCase):
                 self.assertEqual(player.birthdate, player0.birthdate, f'Diff of {{player[{j}].birthdate}}' + itertext)
                 self.assertEqual(player.points, player0.points, f'Diff of {{player[{j}].points}}' + itertext)
                 self.assertEqual(player.rank, player0.rank, f'Diff of {{player[{j}].rank}}' + itertext)
+                self.assertEqual(player.rounds, player0.rounds, f'Diff of {{player[{j}].rounds}}' + itertext)

@@ -74,6 +74,7 @@ def _dump_tournament(fp, tournament):
     fp.write(f'102 {tournament.chiefarbiter}\n')
     fp.write(f'112 {tournament.deputyarbiters}\n')
     fp.write(f'122 {tournament.rateofplay}\n')
+    fp.write(f'132 {" ".join(tournament.rounddates)}\n')
 
     for field, value in tournament.xx_fields.items():
         fp.write(f'{field} {value}\n')
@@ -151,7 +152,7 @@ def _parse_tournament(lines):
     return tournament
 
 
-_PLAYER_LINE_PATTERN = re.compile(r'^001 (?P<startrank>[ \d]{4}) (?P<sex>[\w ]) (?P<title>[\w ]{2}) (?P<name>.{33}) (?P<rating>[ \d]{4}) (?P<fed>[\w ]{3}) (?P<id>[ \d]{11}) (?P<birthdate>.{10}) (?P<points>[ \d.]{4}) (?P<rank>[ \d]{4})(?P<rounds>(  [ \d]{4} [bw\- ] [1=0+wdl\-hfuz ]| {10})*)\s*$', re.IGNORECASE)
+_PLAYER_LINE_PATTERN = re.compile(r'^001 (?P<startrank>[ \d]{4}) (?P<sex>[\w ]) (?P<title>[\w ]{2}) (?P<name>.{33}) (?P<rating>[ \d]{4}) (?P<fed>[\w ]{3}) (?P<id>[ \d]{11}) (?P<birthdate>.{10}) (?P<points>[ \d.]{4}) (?P<rank>[ \d]{4})(?P<rounds>(  [ \d]{4} [bsw\- ] [1=0+wdl\-hfuz ]| {10})*)\s*$', re.IGNORECASE)
 def _parse_player(line):
     match = _PLAYER_LINE_PATTERN.fullmatch(line)
     if match is None:

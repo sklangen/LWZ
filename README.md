@@ -4,12 +4,12 @@ CLI-Tool zum verwalten von vereinsinternen, monatlichen Turnieren.
 
 ## Todo
 
-- [ ] Spieler- und Saisonklasse für `season.yml` unter Nutzung vom [yaml.YAMLObject](https://pyyaml.org/wiki/PyYAMLDocumentation#constructors-representers-resolvers).
+- [X] Spieler- und Saisonklasse für `season.yml` unter Nutzung vom [yaml.YAMLObject](https://pyyaml.org/wiki/PyYAMLDocumentation#constructors-representers-resolvers).
   - [X] `Season (mode, startYear, [players], parentSeason)`
   - [X] `SeasonPlayer (playerId, [names], dwz, stateOfMembership)`
   - [X] Hilfsfunktion zum einlesen einer Saison mit gegebenem Ordnerpfad.
-  - [X] Hilfsfunktion zum einlesen der Turniere im Ordner der `season.yml` unter Benutzung von <https://github.com/erral/fidetournament>.
-  - [ ] Testen des Trf Parsers bis Ragnarök angebrochen ist.
+  - [X] Hilfsfunktion zum einlesen der [Trf-Turniere](https://www.fide.com/FIDE/handbook/C04Annex2_TRF16.pdf) im Ordner der `season.yml`.
+  - [X] Testen des Trf Parsers bis Ragnarök angebrochen ist.
   
 - [X] Mit Pip einen Argparser in den `$PATH` [installieren](https://docs.python.org/3/distutils/setupscript.html#installing-scripts), der zumindest alle [Subcommands](https://docs.python.org/dev/library/argparse.html#sub-commands) kennt, sodass `lwz --help` gefüllt ist. Implementiert muss hier noch nichts sein.
   - [X] `lwz init` Anlegen einer Boilerplate `season.yml`.

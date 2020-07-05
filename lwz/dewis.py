@@ -1,9 +1,9 @@
 from .SeasonDirectory import SeasonPlayer
-from .utils import int_or_default
+from .utils import *
 from csv import DictReader
 from io import StringIO
 from typing import Iterable
-from urllib.request import urlopen
+
 
 
 class DewisException(Exception):
@@ -12,8 +12,7 @@ class DewisException(Exception):
 
 def get_club(zps: str) -> Iterable[SeasonPlayer]:
     url = 'https://www.schachbund.de/php/dewis/verein.php?format=csv&zps=' + zps
-    resource = urlopen(url)
-    content = resource.read().decode(resource.headers.get_content_charset())
+    content = http_get(url)
 
     if content.startswith('Fehler: '):
         raise DewisException(content)

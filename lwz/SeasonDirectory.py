@@ -82,7 +82,7 @@ class SeasonDirectory:
     def dump_season(self):
         '''Save season information into directory/season.yml'''
         with open(self._season_yml_filename, 'w') as f:
-            yaml.safe_dump(self.season, f, sort_keys=False)
+            yaml.safe_dump(self.season, f, sort_keys=False, allow_unicode=True)
 
     @property
     def _season_yml_filename(self) -> str:

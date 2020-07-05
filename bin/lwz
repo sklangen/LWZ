@@ -32,16 +32,16 @@ parser_init.add_argument('-z', '--zps',
 parser_init.set_defaults(func=lwz.init_season)
 
 parser_import = subparsers.add_parser('import', help='Import a tournament from a variety of sources')
-parser_import.add_argument('-s', '--source',
-    choices=('lichess', 'chesscom', 'swiss'), default='lichess',
+parser_import.add_argument('-s', '--source', required=True,
+    choices=lwz.parsers.keys(),
     help='Source to import from. Lichess is default')
 parser_import.add_argument('-m', '--month',
-    choices=calendar.month_abbr[1:], default=datetime.now().strftime('%b'),
-    help='Month of the tournament to import. Default is the current month')
+    help='If set, this is the month of the tournament to import. If empty, the month will be extracted from the source')
 parser_import.add_argument('-r', '--rounds', type=int,
     help='If set, number of rounds is set to the given value. Otherwise the number of rounds is evaluated by the mode specified in the season.yml')
-parser_import.add_argument('tournament', help='ID or path (based on --type) of to the tournament to import')
-parser_import.set_defaults(func=lwz.import_tournament)
+parser_import.add_argument('tournaments', nargs='+',
+    help='ID or path (based on --type) of to the tournament to import')
+parser_import.set_defaults(func=lwz.import_tournaments)
 
 parser_html = subparsers.add_parser('html', help='Generate html files of the given seasons into --directory')
 parser_html.add_argument('seasons', help='Seasons to make html for', nargs='+')

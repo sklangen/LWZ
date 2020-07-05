@@ -31,6 +31,11 @@ class SeasonPlayer(MyYAMLObject):
     stateOfMembership: str = 'MEMBER'
     names: List[str] = field(default_factory=list)
 
+    @property
+    def name(self) -> str:
+        if self.names:
+            return self.names[0]
+        return str(self.id)
 
 @dataclass
 class Season(MyYAMLObject):

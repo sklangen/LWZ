@@ -1,3 +1,4 @@
+from .utils import int_or_default
 from dataclasses import dataclass, field
 from typing import List, Dict
 import io
@@ -163,12 +164,12 @@ def _parse_player(line):
         sex=match.group('sex'),
         title=match.group('title').strip(),
         name=match.group('name').strip(),
-        rating=_int_or(match.group('rating'), 0),
+        rating=int_or_default(match.group('rating'), 0),
         fed=match.group('fed').strip(),
-        id=_int_or(match.group('id')),
+        id=int_or_default(match.group('id')),
         birthdate=match.group('birthdate').strip(),
         points=float(match.group('points')),
-        rank=_int_or(match.group('rank')),
+        rank=int_or_default(match.group('rank')),
         rounds=list(_parse_rounds(match.group('rounds')[2:].rstrip())),
     )
 
@@ -177,16 +178,10 @@ def _parse_rounds(string):
     round = 1
     while len(string) >= 7:
         yield Round(
-            startrank=_int_or(string[:4].strip()),
+            startrank=int_or_default(string[:4].strip()),
             color=string[5],
             result=string[7],
             round=round
         )
         round += 1
         string = string[10:]
-
-
-def _int_or(string, default=None):
-    if string == '' or string.isspace():
-        return default
-    return int(string)

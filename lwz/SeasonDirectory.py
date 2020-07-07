@@ -1,7 +1,6 @@
 from . import trf
 from dataclasses import dataclass, field
-from typing import Dict
-from typing import List
+from typing import Dict, List, Iterable
 import calendar
 import os
 import yaml
@@ -27,15 +26,35 @@ class SeasonPlayer(MyYAMLObject):
     '''Represating a player participating in a season'''
 
     id: str
+    firstname: str = None
+    lastname: str = None
     dwz: int = 0
     stateOfMembership: str = 'MEMBER'
     names: List[str] = field(default_factory=list)
+    
+    @property
+    def aliases(self) -> Iterable[str]:
+        '''All aliases associated with this player'''
+        if not (self.firstname is None or self.lastname is None):
+            yield self.firstname + ' ' + self.lastname
+            yield self.lastname + ', ' + self.firstname
+            yield self.lastname + ',' + self.firstname
+
+        if self.firstname is not None:
+            yield self.firstname
+
+        if self.lastname is not None:
+            yield self.lastname
+
+        for name in self.names:
+            yield name
+
+        yield str(self.id)
 
     @property
     def name(self) -> str:
-        if self.names:
-            return self.names[0]
-        return str(self.id)
+        '''Primary name of this player'''
+        return next(self.aliases)
 
 @dataclass
 class Season(MyYAMLObject):
@@ -73,6 +92,16 @@ class SeasonDirectory:
         '''Dump all data into directory'''
         self.dump_season()
         self.dump_tournaments()
+
+    def add_player_by_name(self, name: str) -> SeasonPlayer:
+        '''Create a player with that name, add it to the season and return it'''
+        sp = SeasonPlayer(
+            id=max((p.id for p in self.season.players if p.id < 10_000_000), default=0)+1,
+            stateOfMembership='GUEST',
+            names=[name]
+        )
+        self.season.players.append(sp)
+        return sp
 
     def load_season(self):
         '''Load season information from directory/season.yml'''

@@ -22,5 +22,6 @@ def get_club(zps: str) -> Iterable[SeasonPlayer]:
         yield SeasonPlayer(
             id=int(row['id']),
             dwz=int_or_default(row['dwz'], 0),
-            names=[row['vorname'] + ' ' + row['nachname']],
+            firstname=row['vorname'],
+            lastname=row['nachname'],
         )

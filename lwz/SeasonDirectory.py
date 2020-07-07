@@ -1,4 +1,5 @@
 from . import trf
+from .utils import escape_umlaute
 from dataclasses import dataclass, field
 from typing import Dict, List, Iterable
 import calendar
@@ -35,16 +36,17 @@ class SeasonPlayer(MyYAMLObject):
     @property
     def aliases(self) -> Iterable[str]:
         '''All aliases associated with this player'''
-        if not (self.firstname is None or self.lastname is None):
-            yield self.firstname + ' ' + self.lastname
-            yield self.lastname + ', ' + self.firstname
-            yield self.lastname + ',' + self.firstname
+        for f in [str, escape_umlaute]:
+            if not (self.firstname is None or self.lastname is None):
+                yield f(self.firstname) + ' ' + f(self.lastname)
+                yield f(self.lastname) + ', ' + f(self.firstname)
+                yield f(self.lastname) + ',' + f(self.firstname)
 
-        if self.firstname is not None:
-            yield self.firstname
+            if self.firstname is not None:
+                yield f(self.firstname)
 
-        if self.lastname is not None:
-            yield self.lastname
+            if self.lastname is not None:
+                yield f(self.lastname)
 
         for name in self.names:
             yield name

@@ -8,22 +8,15 @@ def parse_lichess(tournament_id: str) -> trf.Tournament:
     url = f'https://lichess.org/swiss/{tournament_id}.trf'
     content = http_get(url)
     tournament = trf.loads(content)
-    return {
-        'tournament': tournament,
-        'month': tournament.startdate[:3],
-        'rounds': int(tournament.xx_fields['XXR'])
-    }
+    month = tournament.startdate[:3]
+    return tournament, month
 
 
 def parse_swiss(filename) -> trf.Tournament:
     with open(filename, encoding='ISO-8859-1') as f:
         tournament = trf.load(f)
-
     month = calendar.month_abbr[int(tournament.startdate.split('.')[1])]
-    return {
-        'tournament': tournament,
-        'month': month
-    }
+    return tournament, month
 
 
 def parse_oldlwz(filename) -> trf.Tournament:
@@ -40,13 +33,8 @@ def parse_oldlwz(filename) -> trf.Tournament:
         numplayers=len(players),
         players=players,
     )
-
     month = calendar.month_abbr[int(filename[-6:-4])]
-    return {
-        'tournament': tournament,
-        'month': month,
-        'rounds': len(players)-1,
-    }
+    return tournament, month
 
 
 parsers = {

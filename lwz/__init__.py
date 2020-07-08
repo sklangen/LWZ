@@ -26,14 +26,16 @@ def import_tournaments(directory, tournaments, source, month=None, rounds=None):
     seasonDir.load_season()
 
     for tour in tournaments:
-        parsed = parsers[source](tour)
+        tournament, parsed_month = parsers[source](tour)
 
-        tournament = parsed['tournament']
-        tournament.xx_fields['XXR'] = rounds or parsed.get('rounds', max(len(p.rounds) for p in tournament.players))
+        if rounds:
+            tournament.xx_fields['XXR'] = rounds
+        if month:
+            parsed_month = month
 
-        parsed_month = month or parsed['month']
         if not parsed_month in calendar.month_abbr[1:]:
-            raise LWZException('No a valid month: ' + month)
+            raise LWZException('Not a valid month: ' + month)
+        tournament.xx_fields['XXM'] = parsed_month
 
         for player in tournament.players:
             candidates = list(filter(lambda p: player.name in p.aliases, seasonDir.season.players))
@@ -48,7 +50,9 @@ def import_tournaments(directory, tournaments, source, month=None, rounds=None):
             player.id = sp.id
             
         seasonDir.tournaments[parsed_month] = tournament
-    seasonDir.dump()
+        seasonDir.dump_tournament(parsed_month)
+
+    seasonDir.dump_season()
 
 
 def build_html(directory, seasons):

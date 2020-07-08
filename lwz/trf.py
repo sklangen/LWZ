@@ -51,6 +51,16 @@ class Tournament(object):
     teams: List[str] = field(default_factory=list) 
     xx_fields: Dict[str, str] = field(default_factory=dict)
 
+    @property
+    def numrounds(self):
+        if 'XXR' in self.xx_fields:
+            return int(self.xx_fields['XXR'])
+
+        if self.rounddates:
+            return len(self.rounddates)
+
+        return max(len(p.rounds) for p in self.players) or len(self.players)-1
+
 
 def dump(fp, tournament):
     _dump_tournament(fp, tournament)

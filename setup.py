@@ -5,6 +5,7 @@ with open('README.md') as f:
 
 setuptools.setup(
     name='lwz',
+    packages=setuptools.find_packages(),
     version='0.0.1',
     author='Schachklub Langen e. V. ',
     author_email='Turnierleiter@sklangen.de',
@@ -12,7 +13,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/sklangen/lwz/',
-    packages=setuptools.find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3.8',
         'Environment :: Console',
@@ -24,4 +24,7 @@ setuptools.setup(
     ],
     python_requires='>=3.8',
     scripts=['bin/lwz'],
+    package_data={
+       'lwz': ['templates/*.html'],
+    },
 )

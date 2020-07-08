@@ -1,6 +1,9 @@
 from . import dewis
+from .Mode import modes
 from .Parser import parsers
 from .SeasonDirectory import *
+from .render import SeasonDirectoryRenderer
+from pathlib import Path
 import logging
 
 
@@ -56,4 +59,13 @@ def import_tournaments(directory, tournaments, source, month=None, rounds=None):
 
 
 def build_html(directory, seasons):
-    logging.warn('Not gonna build!')
+    for season in seasons:
+        sd = SeasonDirectory(season)
+        sd.load()
+
+        path = Path(Path(season).name)
+        path.mkdir(parents=True, exist_ok=True)
+
+        renderer = SeasonDirectoryRenderer(sd)
+        with open(path / 'index.html', 'w') as f:
+            f.write(renderer.index)

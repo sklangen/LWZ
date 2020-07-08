@@ -22,6 +22,7 @@ subparsers = parser.add_subparsers()
 
 parser_init = subparsers.add_parser('init', help='Generate a boilerplate season.yml')
 parser_init.add_argument('-m', '--mode', required=True,
+    choices=lwz.modes.keys(),
     help='Mode if the season to initialize.')
 parser_init.add_argument('-s', '--start-year', dest='startYear', type=int, required=True,
     help='Start year if the season to initialize.')

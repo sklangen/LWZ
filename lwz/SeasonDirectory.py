@@ -68,6 +68,10 @@ class Season(MyYAMLObject):
     players: List[SeasonPlayer] = field(default_factory=list)
 
     @property
+    def name(self):
+        return f'Saison {self.startYear}/{self.endYear-2000:02}'
+
+    @property
     def endYear(self):
         return self.startYear+1
 

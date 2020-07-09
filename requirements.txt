@@ -1,2 +1,3 @@
 PyYAML
+Babel
 Jinja2

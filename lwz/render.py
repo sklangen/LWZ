@@ -1,5 +1,6 @@
 from .Mode import modes
 from .SeasonDirectory import SeasonDirectory
+from babel.dates import format_date
 from jinja2 import Environment, PackageLoader, select_autoescape
 import calendar
 
@@ -32,8 +33,8 @@ class SeasonDirectoryRenderer:
         yield 'Punkte'
 
         for month in month_names:
-            year = self.seasonDir.year_of_month(month)
-            yield month + ' ' + str(year)
+            d = self.seasonDir.as_date(month)
+            yield format_date(d, 'MMM YYYY', locale='de_DE')
 
     @property
     def rows(self):

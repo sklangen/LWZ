@@ -3,6 +3,7 @@ from .utils import escape_umlaute
 from dataclasses import dataclass, field
 from typing import Dict, List, Iterable, Tuple
 import calendar
+from datetime import date
 import os
 import yaml
 
@@ -130,7 +131,7 @@ class SeasonDirectory:
 
     def load_tournaments(self):
         '''Load all existing tournaments from directory/YYYY_MM.trf'''
-        for month in calendar.month_abbr:
+        for month in calendar.month_abbr[1:]:
             if os.path.isfile(self._tournament_filename(month)):
                 self.load_tournament(month)
 
@@ -145,15 +146,12 @@ class SeasonDirectory:
             self.dump_tournament(month)
 
     def _tournament_filename(self, month: str) -> str:
-        month_index = calendar.month_abbr[:].index(month)
-        year = self.year_of_month(month)
-        return os.path.join(self.directory, f'{year:04}_{month_index:02}.trf')
+        return os.path.join(self.directory, self.as_date(month).strftime('%Y_%m.trf'))
 
-    def year_of_month(self, month: str) -> int:
-        if month in calendar.month_abbr[1:5]:
-            return self.season.endYear 
-        else:
-            return self.season.startYear
+    def as_date(self, month: str) -> date:
+        month = calendar.month_abbr[:].index(month)
+        year = self.season.endYear if month < 5 else self.season.startYear
+        return date(year, month, 1)
 
     def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, trf.Player]]:
         for m, t in self.tournaments.items():

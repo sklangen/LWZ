@@ -1,4 +1,9 @@
 from urllib.request import urlopen
+from babel.dates import format_date
+from calendar import month_abbr
+
+
+month_names = month_abbr[5:] + month_abbr[1:5]
 
 
 def int_or_default(string, default=None):
@@ -19,3 +24,7 @@ def escape_umlaute(s: str) -> str:
             .replace('Ä', 'Ae') \
             .replace('Ö', 'Oe') \
             .replace('Ü', 'Ue') 
+
+
+def format_month_date(d):
+    return format_date(d, 'MMM YYYY', locale='de_DE')

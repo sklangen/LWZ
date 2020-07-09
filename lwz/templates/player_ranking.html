@@ -30,14 +30,16 @@
         <col style="width:130px">
         <col style="width:50px">
         <col style="width:40px">
-        <col span="13" style="width:60px">
+{% for _ in headers[3:]: %}
+        <col style="width:60px">
+{% endfor %}
     </colgroup>
     <tr>
-{% for header in renderer.headers: %}
+{% for header in headers: %}
         <th>{{ header }}</th>
 {% endfor %}
     </tr>
-{% for row in renderer.rows: %}
+{% for row in rows: %}
     <tr>
     {% for cell in row: %}
         <td>{{ cell }}</td>

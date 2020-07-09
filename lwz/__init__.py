@@ -67,5 +67,7 @@ def build_html(directory, seasons):
         path.mkdir(parents=True, exist_ok=True)
 
         renderer = SeasonDirectoryRenderer(sd)
-        with open(path / 'index.html', 'w') as f:
-            f.write(renderer.index)
+        (path/'index.html').write_text(renderer.index)
+
+        for m, html in renderer.tournaments:
+            (path/sd.as_date(m).strftime('%Y_%m.html')).write_text(html)

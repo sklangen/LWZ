@@ -1,7 +1,7 @@
 from . import trf
 from .utils import escape_umlaute
 from dataclasses import dataclass, field
-from typing import Dict, List, Iterable
+from typing import Dict, List, Iterable, Tuple
 import calendar
 import os
 import yaml
@@ -145,6 +145,18 @@ class SeasonDirectory:
             self.dump_tournament(month)
 
     def _tournament_filename(self, month: str) -> str:
-        month = calendar.month_abbr[:].index(month)
-        year = self.season.startYear if month > 4 else self.season.endYear
-        return os.path.join(self.directory, f'{year:04}_{month:02}.trf')
+        month_index = calendar.month_abbr[:].index(month)
+        year = self.year_of_month(month)
+        return os.path.join(self.directory, f'{year:04}_{month_index:02}.trf')
+
+    def year_of_month(self, month: str) -> int:
+        if month in calendar.month_abbr[1:5]:
+            return self.season.endYear 
+        else:
+            return self.season.startYear
+
+    def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, trf.Player]]:
+        for m, t in self.tournaments.items():
+            for p in t.players:
+                if player.id == p.id:
+                    yield m, p

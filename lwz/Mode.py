@@ -4,13 +4,14 @@ class Mode:
     def __init__(self, name: str):
         self.name = name
 
-    def get_attr(self, player: SeasonPlayer):
+    def get_attr(self, player: SeasonPlayer) -> str:
         if player.stateOfMembership != 'MEMBER':
             return 'G'
+        return ''
 
 class RapidMode(Mode):
 
-    def get_attr(self, player):
+    def get_attr(self, player: SeasonPlayer) -> str:
         return super().get_attr(player) + 'B' if player.dwz < 1600 else ''
 
 modes = {

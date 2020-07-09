@@ -1,4 +1,49 @@
 {%  extends "base.html" %}
 
 {% block content %}
+
+<style>
+    table, td, th {
+        border: 1px solid gray;
+        border-collapse: collapse;
+    }
+    tr {
+        height: 50px;
+    }
+    tr:nth-child(even) {
+        background: lightgray;
+    }
+    td {
+        text-align: right;
+        padding: 5px;
+    }
+    td:nth-child(1) {
+        text-align: left;
+    }
+    td:nth-child(3) {
+        text-align: center;
+    }
+</style>
+
+ <table>
+    <colgroup>
+        <col style="width:130px">
+        <col style="width:50px">
+        <col style="width:40px">
+        <col span="13" style="width:60px">
+    </colgroup>
+    <tr>
+{% for header in renderer.headers: %}
+        <th>{{ header }}</th>
+{% endfor %}
+    </tr>
+{% for row in renderer.rows: %}
+    <tr>
+    {% for cell in row: %}
+        <td>{{ cell }}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+
 {% endblock %}

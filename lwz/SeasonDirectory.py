@@ -1,6 +1,7 @@
 from . import trf
 from .utils import escape_umlaute
 from dataclasses import dataclass, field
+import itertools
 from typing import Dict, List, Iterable, Tuple
 import calendar
 from datetime import date
@@ -89,11 +90,16 @@ class SeasonDirectory:
         self.directory = directory
         self.season = season
         self.tournaments = tournaments or {}
+        self.parentSeasonDir = None
 
     def load(self):
         '''Load all data from directory'''
         self.load_season()
         self.load_tournaments()
+
+        if self.season.parentSeason is not None:
+            self.parentSeasonDir = SeasonDirectory(os.path.join(self.directory, self.season.parentSeason))
+            self.parentSeasonDir.load()
 
     def dump(self):
         '''Dump all data into directory'''
@@ -154,6 +160,12 @@ class SeasonDirectory:
         return date(year, month, 1)
 
     def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, trf.Player]]:
+        '''Returns the monthname and the player of tournaments this SeasonPlayer took part in (including A-tournaments)'''
+
+        if player.dwz < 1600 and self.parentSeasonDir is not None:
+            for t in self.parentSeasonDir.months_played(player):
+                yield t
+
         for m, t in self.tournaments.items():
             for p in t.players:
                 if player.id == p.id:

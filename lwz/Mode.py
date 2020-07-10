@@ -15,5 +15,6 @@ class RapidMode(Mode):
         return super().get_attr(player) + 'B' if player.dwz < 1600 else ''
 
 modes = {
-    'RAPID_15PLUS0': RapidMode('Schnellschach 15+0')
+    'RAPID_15PLUS0_A': RapidMode('Schnellschach 15+0 A'),
+    'RAPID_15PLUS0_B': RapidMode('Schnellschach 15+0 B')
 }

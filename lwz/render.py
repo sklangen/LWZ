@@ -21,7 +21,8 @@ class SeasonDirectoryRenderer:
     def index(self):
         return env.get_template('player_ranking.html').render(
             title=self.mode.name + ' - ' + self.seasonDir.season.name,
-            headers=list(self.season_headers),
+            headers=self.headers,
+            month_headers=list(self.month_headers),
             rows=self.season_rows,
         )
 
@@ -44,11 +45,10 @@ class SeasonDirectoryRenderer:
             yield sp.name, sp.dwz, self.mode.get_attr(sp), player.points
 
     @property
-    def season_headers(self):
-        for h in self.headers:
-            yield h
+    def month_headers(self):
         for month in month_names:
-            yield format_month_date(self.seasonDir.as_date(month))
+            d = self.seasonDir.as_date(month)
+            yield d.strftime('%Y_%m.html') if month in self.seasonDir.tournaments else None, format_month_date(d)
 
     @property
     def season_rows(self):

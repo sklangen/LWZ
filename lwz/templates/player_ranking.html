@@ -3,40 +3,50 @@
 {% block content %}
 
 <style>
-    table, td, th {
+    #player_ranking, #player_ranking td, #player_ranking th {
         border: 1px solid gray;
         border-collapse: collapse;
     }
-    tr {
+    #player_ranking tr {
         height: 50px;
     }
-    tr:nth-child(even) {
+    #player_ranking tr:nth-child(even) {
         background: lightgray;
     }
-    td {
+    #player_ranking td {
         text-align: right;
         padding: 5px;
     }
-    td:nth-child(1) {
+    #player_ranking td:nth-child(1) {
         text-align: left;
     }
-    td:nth-child(3) {
+    #player_ranking td:nth-child(3) {
         text-align: center;
     }
 </style>
 
- <table>
+<table id="player_ranking">
     <colgroup>
         <col style="width:130px">
         <col style="width:50px">
         <col style="width:40px">
-{% for _ in headers[3:]: %}
+        <col style="width:60px">
+{% for _ in month_headers %}
         <col style="width:60px">
 {% endfor %}
     </colgroup>
     <tr>
 {% for header in headers: %}
         <th>{{ header }}</th>
+{% endfor %}
+{% for file, header in month_headers or []: %}
+        <th>
+    {% if file: %}
+            <a href="{{ file }}">{{ header }}</a>
+    {% else: %}
+            {{ header }}
+    {% endif %}
+        </th>
 {% endfor %}
     </tr>
 {% for row in rows: %}

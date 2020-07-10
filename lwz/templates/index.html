@@ -1,0 +1,14 @@
+{%  extends "base.html" %}
+
+{% block content %}
+    {% for mode, season in modes.items(): %}
+        <h3>{{ mode.name }}</h3>
+        <ul>
+        {% for path, name in season: %}
+            <li>
+                <a href="{{ path }}">{{ name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock %}

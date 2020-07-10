@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
     <meta charset="utf-8" />
-    <title>Turniere des Schachklub Langen e. V.{% if title: %} - {{ title }}{% endif %}</title>
+    <base target="_parent">
+    <title>{% if title: %}{{ title }} - {% endif %}Turniere des Schachklub Langen e. V.</title>
 </head>
     <body>
 {% block content %}

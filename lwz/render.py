@@ -10,6 +10,12 @@ env = Environment(
 )
 
 
+def render_index(modes) -> str:
+    return env.get_template('index.html').render(
+        title='Alle Saisons aller Modi',
+        modes=modes
+    )
+
 
 class SeasonDirectoryRenderer:
     def __init__(self, seasonDir: SeasonDirectory):

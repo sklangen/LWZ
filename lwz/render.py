@@ -2,6 +2,7 @@ from .utils import month_names, format_month_date
 from .Mode import modes
 from .SeasonDirectory import SeasonDirectory
 from jinja2 import Environment, PackageLoader, select_autoescape
+import logging
 
 
 env = Environment(
@@ -47,8 +48,12 @@ class SeasonDirectoryRenderer:
 
     def tournament_ranking(self, tournament):
         for player in sorted(tournament.players, key=lambda p: p.rank):
-            sp = next(filter(lambda p: p.id == player.id, self.seasonDir.all_players))
-            yield sp.name, sp.dwz, self.mode.get_attr(sp), player.points
+            try:
+                sp = next(filter(lambda p: p.id == player.id, self.seasonDir.all_players))
+                yield sp.name, sp.dwz, self.mode.get_attr(sp), player.points
+            except StopIteration:
+                logging.exception('No SeasonPlayer for: ' + str(player))
+                raise
 
     @property
     def month_headers(self):

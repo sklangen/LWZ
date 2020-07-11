@@ -69,5 +69,6 @@ def build_html(directory, seasons):
                 (path/sd.as_date(m).strftime('%Y_%m.html')).write_text(html)
         except Exception:
             logging.exception('Building html for ' + season)
+            raise
 
     (Path(directory)/'index.html').write_text(render_index(modes))

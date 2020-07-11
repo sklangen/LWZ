@@ -4,9 +4,9 @@
     {% for mode, season in modes.items(): %}
         <h3>{{ mode.name }}</h3>
         <ul>
-        {% for path, name in season: %}
+        {% for season in season: %}
             <li>
-                <a href="{{ path }}">{{ name }}</a>
+                <a href="{{ season.outdir }}">{{ season.name }}</a>
             </li>
         {% endfor %}
         </ul>

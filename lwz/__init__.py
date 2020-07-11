@@ -51,17 +51,17 @@ def import_tournaments(directory, tournaments, source, month=None, rounds=None):
 
 
 def build_html(directory, seasons):
-    renderes = {}
+    modes = {}
 
     for season in seasons:
         sd = SeasonDirectory(season)
         sd.load()
 
-        path = Path(directory, Path(season).name)
+        path = Path(directory, sd.season.outdir)
         path.mkdir(parents=True, exist_ok=True)
 
         renderer = SeasonDirectoryRenderer(sd)
-        renderes.setdefault(renderer.mode, []).append((path.name, sd.season.name))
+        modes.setdefault(renderer.mode, []).append(sd.season)
 
         try:
             (path/'index.html').write_text(renderer.index)
@@ -70,4 +70,4 @@ def build_html(directory, seasons):
         except Exception:
             logging.exception('Building html for ' + season)
 
-    (Path(directory)/'index.html').write_text(render_index(renderes))
+    (Path(directory)/'index.html').write_text(render_index(modes))

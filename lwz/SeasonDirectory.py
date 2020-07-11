@@ -1,10 +1,11 @@
 from . import trf
 from .utils import escape_umlaute
 from dataclasses import dataclass, field
-import itertools
+from datetime import date
 from typing import Dict, List, Iterable, Tuple
 import calendar
-from datetime import date
+import itertools
+import logging
 import os
 import yaml
 
@@ -97,29 +98,19 @@ class SeasonDirectory:
         self.load_season()
         self.load_tournaments()
 
-        if self.season.parentSeason is not None:
-            self.parentSeasonDir = SeasonDirectory(os.path.join(self.directory, self.season.parentSeason))
-            self.parentSeasonDir.load()
-
     def dump(self):
         '''Dump all data into directory'''
         self.dump_season()
         self.dump_tournaments()
 
-    def add_player_by_name(self, name: str) -> SeasonPlayer:
-        '''Create a player with that name, add it to the season and return it'''
-        sp = SeasonPlayer(
-            id=max((p.id for p in self.season.players if p.id < 10_000_000), default=0)+1,
-            stateOfMembership='GUEST',
-            names=[name]
-        )
-        self.season.players.append(sp)
-        return sp
-
     def load_season(self):
         '''Load season information from directory/season.yml'''
         with open(self._season_yml_filename) as f:
             self.season = yaml.safe_load(f)
+
+        if self.season.parentSeason is not None:
+            self.parentSeasonDir = SeasonDirectory(os.path.join(self.directory, self.season.parentSeason))
+            self.parentSeasonDir.load_season()
 
     def dump_season(self):
         '''Save season information into directory/season.yml'''
@@ -141,6 +132,9 @@ class SeasonDirectory:
             if os.path.isfile(self._tournament_filename(month)):
                 self.load_tournament(month)
 
+        if self.parentSeasonDir is not None:
+            self.parentSeasonDir.load_tournaments()
+
     def dump_tournament(self, month: str):
         '''Save tournament into directory/YYYY_MM.trf'''
         with open(self._tournament_filename(month), 'w') as f:
@@ -159,9 +153,42 @@ class SeasonDirectory:
         year = self.season.endYear if month < 5 else self.season.startYear
         return date(year, month, 1)
 
-    def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, trf.Player]]:
-        '''Returns the monthname and the player of tournaments this SeasonPlayer took part in (including A-tournaments)'''
+    @property
+    def all_players(self):
+        '''Retuns all players in this season and all parent seasons'''
+        if self.parentSeasonDir is not None:
+            for p in self.parentSeasonDir.all_players:
+                if p.dwz < 1600:
+                    yield p
 
+        for p in self.season.players:
+            yield p
+
+    def player_by_name(self, name: str) -> SeasonPlayer:
+        '''Get our create a player associated with that name'''
+        candidates = list(filter(lambda p: name in p.aliases, self.all_players))
+
+        if len(candidates) >= 2:
+            raise LWZException('Too many name candidates: ' + str(candidates))
+        elif not candidates:
+            sp =  self.add_player_by_name(name)
+            logging.warn('Name not found, adding player: ' + str(sp))
+            return sp
+        else:
+            return candidates[0]
+
+    def add_player_by_name(self, name: str) -> SeasonPlayer:
+        '''Create a player with that name, add it to the season and return it'''
+        sp = SeasonPlayer(
+            id=max((p.id for p in self.all_players if p.id < 10_000_000), default=0)+1,
+            stateOfMembership='GUEST',
+            names=[name]
+        )
+        self.season.players.append(sp)
+        return sp
+
+    def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, trf.Player]]:
+        '''Returns the month name and the player of tournaments this SeasonPlayer took part in (including A-tournaments)'''
         if player.dwz < 1600 and self.parentSeasonDir is not None:
             for t in self.parentSeasonDir.months_played(player):
                 yield t

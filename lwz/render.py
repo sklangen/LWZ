@@ -47,7 +47,7 @@ class SeasonDirectoryRenderer:
 
     def tournament_ranking(self, tournament):
         for player in sorted(tournament.players, key=lambda p: p.rank):
-            sp = next(filter(lambda p: p.id == player.id, self.seasonDir.season.players))
+            sp = next(filter(lambda p: p.id == player.id, self.seasonDir.all_players))
             yield sp.name, sp.dwz, self.mode.get_attr(sp), player.points
 
     @property
@@ -63,7 +63,7 @@ class SeasonDirectoryRenderer:
 
     @property
     def season_rows_calculated(self):
-        for player in self.seasonDir.season.players:
+        for player in self.seasonDir.all_players:
             months_played = dict(self.seasonDir.months_played(player))
 
             if months_played:

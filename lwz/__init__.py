@@ -41,15 +41,7 @@ def import_tournaments(directory, tournaments, source, month=None, rounds=None):
         tournament.xx_fields['XXM'] = parsed_month
 
         for player in tournament.players:
-            candidates = list(filter(lambda p: player.name in p.aliases, seasonDir.season.players))
-
-            if len(candidates) >= 2:
-                raise LWZException('Too many name candidates: ' + str(candidates))
-            elif not candidates:
-                sp = seasonDir.add_player_by_name(player.name)
-                logging.warn('Name not found, adding player: ' + repr(sp.name))
-            else:
-                sp = candidates[0]
+            sp = seasonDir.player_by_name(player.name)
             player.id = sp.id
             
         seasonDir.tournaments[parsed_month] = tournament
@@ -71,8 +63,11 @@ def build_html(directory, seasons):
         renderer = SeasonDirectoryRenderer(sd)
         renderes.setdefault(renderer.mode, []).append((path.name, sd.season.name))
 
-        (path/'index.html').write_text(renderer.index)
-        for m, html in renderer.tournaments:
-            (path/sd.as_date(m).strftime('%Y_%m.html')).write_text(html)
+        try:
+            (path/'index.html').write_text(renderer.index)
+            for m, html in renderer.tournaments:
+                (path/sd.as_date(m).strftime('%Y_%m.html')).write_text(html)
+        except Exception:
+            logging.exception('Building html for ' + season)
 
     (Path(directory)/'index.html').write_text(render_index(renderes))

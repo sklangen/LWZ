@@ -162,8 +162,7 @@ class SeasonDirectory:
         '''Retuns all players in this season and all parent seasons'''
         if self.parentSeasonDir is not None:
             for p in self.parentSeasonDir.all_players:
-                if p.dwz < 1600:
-                    yield p
+                yield p
 
         for p in self.season.players:
             yield p

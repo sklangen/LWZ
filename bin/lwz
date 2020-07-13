@@ -11,7 +11,7 @@ import sys
 
 parser = argparse.ArgumentParser(
     prog='lwz', 
-    description='CLI-Tool to manage clubintern, monthly tournaments'
+    description='CLI-Tool to manage club intern, monthly tournaments'
 )
 parser.add_argument('-D', '--directory', default='.',
     help='Directory with season.yml in it. Default is the current working directory')

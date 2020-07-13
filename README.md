@@ -1,6 +1,6 @@
 # LWZ
 
-CLI-Tool zum verwalten von vereinsinternen, monatlichen Turnieren.
+CLI-Tool to manage club intern, monthly tournaments.
 
 ## Todo
 

@@ -18,7 +18,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/sklangen/lwz/',
     classifiers=[
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.8',
         'Environment :: Console',
         'Operating System :: OS Independent',
         'Development Status :: 1 - Planning',
@@ -27,7 +27,7 @@ setuptools.setup(
         'Natural Language :: English',
         'Natural Language :: German',
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.8',
     scripts=['bin/lwz'],
     package_data={
        'lwz': ['templates/*.html'],

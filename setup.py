@@ -1,11 +1,15 @@
 import setuptools
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 with open('README.md') as f:
     long_description = f.read()
 
 setuptools.setup(
     name='lwz',
     packages=setuptools.find_packages(),
+    install_requires=required,
     version='0.0.1',
     author='Schachklub Langen e. V. ',
     author_email='Turnierleiter@sklangen.de',

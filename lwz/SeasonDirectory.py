@@ -190,7 +190,7 @@ class SeasonDirectory:
         self.season.players.append(sp)
         return sp
 
-    def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, trf.Player]]:
+    def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, Tuple[trf.Player, trf.Tournament]]]:
         '''Returns the month name and the player of tournaments this SeasonPlayer took part in (including A-tournaments)'''
         if player.dwz < 1600 and self.parentSeasonDir is not None:
             for t in self.parentSeasonDir.months_played(player):
@@ -199,4 +199,4 @@ class SeasonDirectory:
         for m, t in self.tournaments.items():
             for p in t.players:
                 if player.id == p.id:
-                    yield m, p
+                    yield m, (p, t)

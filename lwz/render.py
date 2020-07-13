@@ -22,13 +22,13 @@ class SeasonDirectoryRenderer:
     def __init__(self, seasonDir: SeasonDirectory):
         self.seasonDir = seasonDir
         self.mode = modes[seasonDir.season.mode]
-        self.headers = ['Name', 'DWZ', 'Attr', 'Punkte']
+        self.headers = ['Name', 'DWZ', 'Attr']
 
     @property
     def index(self):
         return env.get_template('player_ranking.html').render(
             title=self.mode.name + ' - ' + self.seasonDir.season.name,
-            headers=self.headers,
+            headers=self.headers + [self.mode.score_header],
             month_headers=list(self.month_headers),
             rows=self.season_rows,
         )
@@ -42,7 +42,7 @@ class SeasonDirectoryRenderer:
                     self.seasonDir.season.name, 
                     format_month_date(self.seasonDir.as_date(m))
                 ]),
-                headers=self.headers,
+                headers=self.headers + ['Punkte'],
                 rows=self.tournament_ranking(t),
             )
 
@@ -64,7 +64,7 @@ class SeasonDirectoryRenderer:
     @property
     def season_rows(self):
         for player, score, months in sorted(self.season_rows_calculated, key=lambda t: t[1], reverse=True):
-            yield [player.name, player.dwz, self.mode.get_attr(player), score] + months
+            yield [player.name, player.dwz, self.mode.get_attr(player), self.mode.format_score(score)] + months
 
     @property
     def season_rows_calculated(self):
@@ -72,7 +72,10 @@ class SeasonDirectoryRenderer:
             months_played = dict(self.seasonDir.months_played(player))
 
             if months_played:
-                score = sum(sorted((p.points for p in months_played.values()), reverse=True)[:6])
-                months = [getattr(months_played.get(m), 'points', '') for m in month_names]
+                score = sum(sorted((self.mode.get_score(p, t) for p, t in months_played.values()), reverse=True)[:6])
+                months = [
+                    months_played[m][0].points 
+                    if m in months_played else ''
+                    for m in month_names]
 
                 yield player, score, months

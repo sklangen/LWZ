@@ -9,8 +9,7 @@ with open('README.md') as f:
 setuptools.setup(
     name='lwz',
     packages=setuptools.find_packages(),
-    install_requires=required,
-    version='0.0.1',
+    version='1.0.0',
     author='Schachklub Langen e. V. ',
     author_email='Turnierleiter@sklangen.de',
     description='CLI-Tool to manage club intern, monthly tournaments.',
@@ -18,7 +17,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/sklangen/lwz/',
     classifiers=[
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.6',
         'Environment :: Console',
         'Operating System :: OS Independent',
         'Development Status :: 1 - Planning',
@@ -27,7 +26,7 @@ setuptools.setup(
         'Natural Language :: English',
         'Natural Language :: German',
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.6',
     scripts=['bin/lwz'],
     package_data={
        'lwz': ['templates/*.html'],

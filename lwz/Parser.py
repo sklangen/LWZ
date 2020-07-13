@@ -9,6 +9,10 @@ def parse_lichess(tournament_id: str) -> trf.Tournament:
     content = http_get(url)
     tournament = trf.loads(content)
     month = tournament.startdate[:3]
+
+    for p in tournament.players:
+        p.rank = p.startrank
+
     return tournament, month
 
 

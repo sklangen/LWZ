@@ -20,8 +20,8 @@ CLI-Tool zum verwalten von vereinsinternen, monatlichen Turnieren.
   - [X] Hilfsfunktion zum speichern einer Saison mit gegebenem Ordnerpfad.
   - [X] Löschen von [Phantomturnieren](https://github.com/Tobias-Thomas/LWZ/commit/9f1a0c9f2616bdd31b2d6c606a1e2656a0c03d13#commitcomment-36659959).
   
-- [ ] Umsetzung des Befehls `lwz html` zum generieren der HTML-Tabellen. Hier kann hoffentlich einiges aus dem alten Projekt wiederverwendet werden.
-  - [ ] Implementierung der Turnierordnung - Stichwort Moduslogik.
-  - [ ] Schrieben von [Jinja2 Templates](https://palletsprojects.com/p/jinja/).
+- [X] Umsetzung des Befehls `lwz html` zum generieren der HTML-Tabellen. Hier kann hoffentlich einiges aus dem alten Projekt wiederverwendet werden.
+  - [X] Implementierung der Turnierordnung - Stichwort Moduslogik.
+  - [X] Schrieben von [Jinja2 Templates](https://palletsprojects.com/p/jinja/).
 
 - [ ] J.B. Tabellen zeigen (Sehr strenger Unit Test ;).

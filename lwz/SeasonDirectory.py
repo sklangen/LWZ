@@ -84,6 +84,10 @@ class Season(MyYAMLObject):
         return f'{self.mode.lower()}_{self.startYear-2000}{self.endYear-2000}'
 
     @property
+    def startDate(self):
+        return date(self.startYear, 5, 1)
+
+    @property
     def endYear(self):
         return self.startYear+1
 
@@ -190,6 +194,17 @@ class SeasonDirectory:
         )
         self.season.players.append(sp)
         return sp
+
+    def add_or_update_player(self, player: SeasonPlayer):
+        '''If a player has this id, update id. Add it otherwise'''
+        p = next(filter(lambda p: p.id == player.id, self.season.players), None)
+        if p is not None:
+            p.firstname = player.firstname
+            p.lastname = player.lastname
+            p.dwz = player.dwz
+            p.stateOfMembership = player.stateOfMembership
+        else:
+            self.season.players.append(player)
 
     def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, Tuple[trf.Player, trf.Tournament]]]:
         '''Returns the month name and the player of tournaments this SeasonPlayer took part in (including A-tournaments)'''

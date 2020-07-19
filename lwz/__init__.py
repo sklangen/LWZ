@@ -5,6 +5,7 @@ from .SeasonDirectory import *
 from .render import SeasonDirectoryRenderer, render_index
 from .utils import LWZException
 from pathlib import Path
+from tqdm import tqdm
 import logging
 
 
@@ -64,5 +65,35 @@ def build_html(directory, seasons):
     (Path(directory)/'index.html').write_text(render_index(modes))
 
 
-def import_dsb(directory, zps, pkz, progress=False):
-    logging.warn('Not gonna query!')
+def import_dsb(directory, zps=[], pkz=[], existing=False, members=False, progress=False):
+    seasonDir = SeasonDirectory(directory)
+    seasonDir.load_season()
+
+    players = []
+
+    for z in zps:
+        players += list(dewis.get_club(z))
+
+    for p in pkz:
+        players.append(dewis.get_player(pkz))
+
+    if existing:
+        for p in seasonDir.season.players:
+            if p.is_dsb:
+                players.append(p)
+
+    if progress:
+        players = tqdm(players, desc='Getting dwz')
+
+    for player in players:
+        try:
+            player.dwz = dewis.get_player_rating_at(player.id, seasonDir.season.startDate)
+        except Exception:
+            logging.exception('Exception trying to get dwz for: ' + player)
+            raise
+
+        if members:
+            players.stateOfMembership = 'MEMBER'
+        seasonDir.add_or_update_player(player)
+
+    seasonDir.dump_season()

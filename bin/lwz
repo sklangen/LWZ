@@ -46,12 +46,16 @@ parser_html = subparsers.add_parser('html', help='Generate html files of the giv
 parser_html.add_argument('seasons', help='Seasons to make html for', nargs='+')
 
 parser_dsb = subparsers.add_parser('dsb', help='Import data from schachbund.de. This may take a long time')
-parser_dsb.add_argument('-z', '--zps', nargs='+',
+parser_dsb.add_argument('-z', '--zps', nargs='+', default=[],
     help='For each, query the dsb api for all players in that club and add or update them.')
-parser_dsb.add_argument('-p', '--pkz', nargs='+',
+parser_dsb.add_argument('-p', '--pkz', type=int, nargs='+', default=[],
     help='For each, query the dsb api that player and add or update him')
+parser_dsb.add_argument('-e', '--existing', action='store_true',
+    help='If set, update all existing dsb players')
 parser_dsb.add_argument('-P', '--progress', action='store_true',
     help='If set, display a progress bar on a player basis')
+parser_dsb.add_argument('-m', '--members', action='store_true',
+    help='If set, all players a set as members')
 parser_dsb.set_defaults(func=lwz.import_dsb)
 
 

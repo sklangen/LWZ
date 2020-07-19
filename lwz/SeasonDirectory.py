@@ -61,6 +61,11 @@ class SeasonPlayer(MyYAMLObject):
         '''Primary name of this player'''
         return next(self.aliases)
 
+    @property
+    def is_dsb(self) -> str:
+        '''Is this player listed on schachbund.de'''
+        return p.id > 10_000_000
+
 @dataclass
 class Season(MyYAMLObject):
     '''Represating a season of monthly tournaments played from May, startYear to April, endYear'''
@@ -167,23 +172,19 @@ class SeasonDirectory:
         for p in self.season.players:
             yield p
 
-    def player_by_name(self, name: str) -> SeasonPlayer:
+    def get_player_by_name(self, name: str) -> SeasonPlayer:
         '''Get our create a player associated with that name'''
         candidates = list(filter(lambda p: name in p.aliases, self.all_players))
 
-        if len(candidates) >= 2:
-            raise LWZException('Too many name candidates: ' + str(candidates))
-        elif not candidates:
-            sp =  self.add_player_by_name(name)
-            logging.warn('Name not found, adding player: ' + str(sp))
-            return sp
-        else:
-            return candidates[0]
+        if len(candidates) != 1:
+            raise LWZException(f'Number of candidates for "{name}" not equal to one. Got: ' + str(candidates))
+
+        return candidates[0]
 
     def add_player_by_name(self, name: str) -> SeasonPlayer:
         '''Create a player with that name, add it to the season and return it'''
         sp = SeasonPlayer(
-            id=max((p.id for p in self.all_players if p.id < 10_000_000), default=0)+1,
+            id=max((p.id for p in self.all_players if not p.is_dsb), default=0)+1,
             stateOfMembership='GUEST',
             names=[name]
         )

@@ -28,8 +28,6 @@ parser_init.add_argument('-s', '--start-year', dest='startYear', type=int, requi
     help='Start year if the season to initialize.')
 parser_init.add_argument('-p', '--parent-season', dest='parentSeason',
     help='Optional, relativ path to the parent seaons directory')
-parser_init.add_argument('-z', '--zps',
-    help='If set, query the dsb api for all players in that club and add them to the season.yml as members')
 parser_init.set_defaults(func=lwz.init_season)
 
 parser_import = subparsers.add_parser('import', help='Import a tournament from a variety of sources')
@@ -46,7 +44,15 @@ parser_import.set_defaults(func=lwz.import_tournaments)
 
 parser_html = subparsers.add_parser('html', help='Generate html files of the given seasons into --directory')
 parser_html.add_argument('seasons', help='Seasons to make html for', nargs='+')
-parser_html.set_defaults(func=lwz.build_html)
+
+parser_dsb = subparsers.add_parser('dsb', help='Import data from schachbund.de. This may take a long time')
+parser_dsb.add_argument('-z', '--zps', nargs='+',
+    help='For each, query the dsb api for all players in that club and add or update them.')
+parser_dsb.add_argument('-p', '--pkz', nargs='+',
+    help='For each, query the dsb api that player and add or update him')
+parser_dsb.add_argument('-P', '--progress', action='store_true',
+    help='If set, display a progress bar on a player basis')
+parser_dsb.set_defaults(func=lwz.import_dsb)
 
 
 def main():
@@ -59,7 +65,7 @@ def main():
 
     logging.basicConfig(
         level=logging.DEBUG if kwargs.pop('verbose') else logging.INFO,
-        format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+        format='[%(levelname)s]: %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
     )
 

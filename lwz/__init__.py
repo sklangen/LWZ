@@ -11,15 +11,8 @@ class LWZException(Exception):
     pass
 
 
-def init_season(directory, mode, startYear, parentSeason=None, zps=None):
+def init_season(directory, mode, startYear, parentSeason=None):
     season = Season(mode, startYear, parentSeason=parentSeason)
-
-    if zps is not None:
-        players = dewis.get_club(zps)
-        season.players = sorted(players, key=lambda p: p.dwz)
-    else:
-        season.players.append(SeasonPlayer(1, names=['Oshgnacknak']))
-
     seasonDir = SeasonDirectory(directory, season=season)
     seasonDir.dump_season()
 
@@ -41,7 +34,7 @@ def import_tournaments(directory, tournaments, source, month=None, rounds=None):
         tournament.xx_fields['XXM'] = parsed_month
 
         for player in tournament.players:
-            sp = seasonDir.player_by_name(player.name)
+            sp = seasonDir.get_player_by_name(player.name)
             player.id = sp.id
             
         seasonDir.tournaments[parsed_month] = tournament
@@ -72,3 +65,7 @@ def build_html(directory, seasons):
             raise
 
     (Path(directory)/'index.html').write_text(render_index(modes))
+
+
+def import_dsb(directory, zps, pkz, progress=False):
+    logging.warn('Not gonna query!')

@@ -64,7 +64,7 @@ class SeasonPlayer(MyYAMLObject):
     @property
     def is_dsb(self) -> str:
         '''Is this player listed on schachbund.de'''
-        return p.id > 10_000_000
+        return self.id > 10_000_000
 
 @dataclass
 class Season(MyYAMLObject):

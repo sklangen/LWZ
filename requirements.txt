@@ -1,3 +1,4 @@
 PyYAML
 Babel
 Jinja2
+lxml

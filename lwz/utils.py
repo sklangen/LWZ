@@ -6,6 +6,10 @@ from calendar import month_abbr
 month_names = month_abbr[5:] + month_abbr[1:5]
 
 
+class LWZException(Exception):
+    pass
+
+
 def int_or_default(string, default=None):
     if string == '' or string.isspace():
         return default

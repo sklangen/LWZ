@@ -1,5 +1,5 @@
 from . import trf
-from .utils import escape_umlaute
+from .utils import escape_umlaute, LWZException
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Dict, List, Iterable, Tuple
@@ -177,7 +177,7 @@ class SeasonDirectory:
         candidates = list(filter(lambda p: name in p.aliases, self.all_players))
 
         if len(candidates) != 1:
-            raise LWZException(f'Number of candidates for "{name}" not equal to one. Got: ' + str(candidates))
+            raise LWZException(f'Number of candidates for name "{name}" not equal to one. Got: ' + str(candidates))
 
         return candidates[0]
 

@@ -3,12 +3,9 @@ from .Mode import modes
 from .Parser import parsers
 from .SeasonDirectory import *
 from .render import SeasonDirectoryRenderer, render_index
+from .utils import LWZException
 from pathlib import Path
 import logging
-
-
-class LWZException(Exception):
-    pass
 
 
 def init_season(directory, mode, startYear, parentSeason=None):

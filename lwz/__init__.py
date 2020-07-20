@@ -59,7 +59,7 @@ def build_html(directory, seasons):
             for m, html in renderer.tournaments:
                 (path/sd.as_date(m).strftime('%Y_%m.html')).write_text(html)
         except Exception:
-            logging.exception('Building html for ' + season)
+            logging.exception('Exception occurred whilst building html for ' + season)
             raise
 
     (Path(directory)/'index.html').write_text(render_index(modes))
@@ -89,7 +89,7 @@ def import_dsb(directory, zps=[], pkz=[], existing=False, members=False, progres
         try:
             player.dwz = dewis.get_player_rating_at(player.id, seasonDir.season.startDate)
         except Exception:
-            logging.exception('Exception trying to get dwz for: ' + player)
+            logging.exception('Exception occurred whilst trying to get dwz for: ' + str(player))
             raise
 
         if members:

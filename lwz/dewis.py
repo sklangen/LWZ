@@ -5,6 +5,7 @@ from csv import DictReader
 from io import StringIO
 from typing import Iterable
 import datetime
+import logging
 import lxml.html as lh
 import math
 
@@ -75,7 +76,12 @@ def extract_date_from_tournament(tournament_id: str) -> datetime.date:
                 continue
             if correct_row:
                 date_string = el.text_content().split(' ')[0]
-                return datetime.datetime.strptime(date_string, '%d.%m.%Y').date()
+
+                try:
+                    return datetime.datetime.strptime(date_string, '%d.%m.%Y').date()
+                except ValueError:
+                    logging.warn(f'No valid date found for tournament id {tournament_id}. Got: ' + date_string)
+                    return None
 
 
 def get_player_rating_at(pkz: int, ref_date: datetime.date) -> int:
@@ -88,7 +94,7 @@ def get_player_rating_at(pkz: int, ref_date: datetime.date) -> int:
         dates = e.map(lambda p: extract_date_from_tournament(p['turniercode']), participations)
 
     for participation, date in zip(participations, dates):
-        if date > ref_date:
+        if date is not None and date > ref_date:
             return int_or_default(participation['dwzalt'], 0)
 
     return int_or_default(participations[-1]['dwzneu'], 0)

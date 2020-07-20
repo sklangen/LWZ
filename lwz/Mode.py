@@ -18,7 +18,7 @@ class Mode:
 class RapidMode(Mode):
 
     def get_attr(self, player: SeasonPlayer) -> str:
-        return super().get_attr(player) + 'B' if player.dwz < 1600 else ''
+        return super().get_attr(player) + ('B' if player.dwz < 1600 else '')
 
     def get_score(self, player: Player, tourmanent: Tournament) -> str: 
         return player.points

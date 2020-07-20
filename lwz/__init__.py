@@ -83,7 +83,7 @@ def import_dsb(directory, zps=[], pkz=[], existing=False, members=False, progres
                 players.append(p)
 
     if progress:
-        players = tqdm(players, desc='Getting dwz')
+        players = tqdm(players, desc='Getting dwz from dsb', ascii=True)
 
     for player in players:
         try:

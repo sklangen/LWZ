@@ -44,6 +44,7 @@ parser_import.set_defaults(func=lwz.import_tournaments)
 
 parser_html = subparsers.add_parser('html', help='Generate html files of the given seasons into --directory')
 parser_html.add_argument('seasons', help='Seasons to make html for', nargs='+')
+parser_html.set_defaults(func=lwz.build_html)
 
 parser_dsb = subparsers.add_parser('dsb', help='Import data from schachbund.de. This may take a long time')
 parser_dsb.add_argument('-z', '--zps', nargs='+', default=[],

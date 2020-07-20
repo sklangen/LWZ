@@ -75,7 +75,7 @@ def import_dsb(directory, zps=[], pkz=[], existing=False, members=False, progres
         players += list(dewis.get_club(z))
 
     for p in pkz:
-        players.append(dewis.get_player(pkz))
+        players.append(dewis.get_player(p))
 
     if existing:
         for p in seasonDir.season.players:

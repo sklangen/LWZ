@@ -33,7 +33,7 @@ class SeasonPlayer(MyYAMLObject):
     firstname: str = None
     lastname: str = None
     dwz: int = 0
-    stateOfMembership: str = 'MEMBER'
+    stateOfMembership: str = 'GUEST'
     names: List[str] = field(default_factory=list)
     
     @property

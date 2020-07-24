@@ -1,5 +1,5 @@
 from .SeasonDirectory import SeasonPlayer
-from .trf import Player, Tournament
+from trf import Player, Tournament
 
 class Mode:
     score_header = 'Punkte'

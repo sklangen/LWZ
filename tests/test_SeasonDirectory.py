@@ -1,5 +1,5 @@
 from lwz import *
-from lwz.trf import *
+from trf import *
 from unittest import TestCase
 import os
 import tempfile
@@ -36,8 +36,8 @@ class SeasonTest(TestCase):
         self.assertEqual(len(tour.players), 13)
         self.assertEqual(tour.players[3].name, 'hansimpech')
         self.assertEqual(tour.players[6].points, 5.0)
-        self.assertEqual(tour.players[12].rounds[3:], [Round(None, ' ', '-', i+1) for i in range(3, 10)])
-        self.assertEqual(tour.players[2].rounds[3].result, '0')
+        self.assertEqual(tour.players[12].games[3:], [Game(None, ' ', '-', i+1) for i in range(3, 10)])
+        self.assertEqual(tour.players[2].games[3].result, '0')
 
     def test_dump(self):
         season_player = SeasonPlayer(
@@ -60,7 +60,7 @@ class SeasonTest(TestCase):
             id=season_player.id,
             points=99.5,
             rating=9999,
-            rounds=[Round((i+2)*2%1000, 'wbs- '[i%3], '1' or '10=+-wdlhfuz '[i%13], i+1) for i in range(5)],
+            games=[Game((i+2)*2%1000, 'wbs- '[i%3], '1' or '10=+-wdlhfuz '[i%13], i+1) for i in range(5)],
         )
 
         tournament = Tournament(

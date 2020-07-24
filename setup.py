@@ -11,7 +11,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=required,
     version='1.0.1',
-    author='Schachklub Langen e. V. ',
+    author='Schachklub Langen e. V.',
     author_email='Turnierleiter@sklangen.de',
     description='CLI-Tool to manage club intern, monthly tournaments.',
     long_description=long_description,

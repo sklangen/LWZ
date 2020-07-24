@@ -1,7 +1,7 @@
-from . import trf
 from .utils import *
 from csv import DictReader
 import calendar
+import trf
 
 
 def parse_lichess(tournament_id: str) -> trf.Tournament:

@@ -3,3 +3,4 @@ Babel
 Jinja2
 lxml
 tqdm
+trf

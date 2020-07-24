@@ -1,4 +1,3 @@
-from . import trf
 from .utils import escape_umlaute, LWZException
 from dataclasses import dataclass, field
 from datetime import date
@@ -7,6 +6,7 @@ import calendar
 import itertools
 import logging
 import os
+import trf
 import yaml
 
 

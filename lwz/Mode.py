@@ -12,6 +12,9 @@ class Mode:
             return 'G'
         return ''
 
+    def get_score(self, player: Player, tourmanent: Tournament) -> float: 
+        return player.points
+
     def format_score(self, score):
         return str(score)
 
@@ -20,13 +23,10 @@ class RapidMode(Mode):
     def get_attr(self, player: SeasonPlayer) -> str:
         return super().get_attr(player) + ('B' if player.dwz < 1600 else '')
 
-    def get_score(self, player: Player, tourmanent: Tournament) -> str: 
-        return player.points
-
 class BlitzMode(Mode):
     score_header = 'Prozent'
 
-    def get_score(self, player: Player, tourmanent: Tournament) -> str:
+    def get_score(self, player: Player, tourmanent: Tournament) -> float:
         return 100 * player.points/tourmanent.numrounds
 
     def format_score(self, score):

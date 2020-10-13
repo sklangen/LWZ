@@ -51,8 +51,7 @@ class SeasonPlayer(MyYAMLObject):
             if self.lastname is not None:
                 yield f(self.lastname)
 
-        for name in self.names:
-            yield name
+        yield from self.names
 
         yield str(self.id)
 
@@ -62,7 +61,7 @@ class SeasonPlayer(MyYAMLObject):
         return next(self.aliases)
 
     @property
-    def is_dsb(self) -> str:
+    def is_dsb(self) -> bool:
         '''Is this player listed on schachbund.de'''
         return self.id > 10_000_000
 
@@ -170,14 +169,11 @@ class SeasonDirectory:
     def all_players(self):
         '''Retuns all players in this season and all parent seasons'''
         if self.parentSeasonDir is not None:
-            for p in self.parentSeasonDir.all_players:
-                yield p
-
-        for p in self.season.players:
-            yield p
+            yield from self.parentSeasonDir.all_players
+        yield from self.season.players
 
     def get_player_by_name(self, name: str) -> SeasonPlayer:
-        '''Get our create a player associated with that name'''
+        '''Get the player associated with that name'''
         candidates = list(filter(lambda p: name in p.aliases, self.all_players))
 
         if len(candidates) != 1:
@@ -209,8 +205,7 @@ class SeasonDirectory:
     def months_played(self, player: SeasonPlayer) -> Iterable[Tuple[str, Tuple[trf.Player, trf.Tournament]]]:
         '''Returns the month name and the player of tournaments this SeasonPlayer took part in (including A-tournaments)'''
         if player.dwz < 1600 and self.parentSeasonDir is not None:
-            for t in self.parentSeasonDir.months_played(player):
-                yield t
+            yield from self.parentSeasonDir.months_played(player)
 
         for m, t in self.tournaments.items():
             for p in t.players:

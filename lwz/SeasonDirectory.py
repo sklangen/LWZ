@@ -181,16 +181,6 @@ class SeasonDirectory:
 
         return candidates[0]
 
-    def add_player_by_name(self, name: str) -> SeasonPlayer:
-        '''Create a player with that name, add it to the season and return it'''
-        sp = SeasonPlayer(
-            id=max((p.id for p in self.all_players if not p.is_dsb), default=0)+1,
-            stateOfMembership='GUEST',
-            names=[name]
-        )
-        self.season.players.append(sp)
-        return sp
-
     def add_or_update_player(self, player: SeasonPlayer):
         '''If a player has this id, update id. Add it otherwise'''
         p = next(filter(lambda p: p.id == player.id, self.season.players), None)

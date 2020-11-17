@@ -40,10 +40,12 @@ class SeasonDirectoryRenderer:
                 title=' - '.join([
                     self.mode.name, 
                     self.seasonDir.season.name, 
-                    format_month_date(self.seasonDir.as_date(m))
+                    format_month_date(self.seasonDir.as_date(m)),
+                    f'{t.numrounds} Runden'
                 ]),
                 headers=self.headers + ['Punkte'],
                 rows=self.tournament_ranking(t),
+                tournament=t
             )
 
     def tournament_ranking(self, tournament):

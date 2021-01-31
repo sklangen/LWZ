@@ -45,7 +45,6 @@ class SeasonDirectoryRenderer:
                 ]),
                 headers=self.headers + ['Punkte'],
                 rows=self.tournament_ranking(t),
-                tournament=t
             )
 
     def tournament_ranking(self, tournament):

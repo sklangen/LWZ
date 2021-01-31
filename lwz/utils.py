@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 from babel.dates import format_date
 from calendar import month_abbr
+import json
 
 
 month_names = month_abbr[5:] + month_abbr[1:5]
@@ -19,6 +20,12 @@ def int_or_default(string, default=None):
 def http_get(url):
     resource = urlopen(url)
     return resource.read().decode(resource.headers.get_content_charset())
+
+
+def http_get_ndjson(url):
+    resource = urlopen(url)
+    for line in resource:
+        yield json.loads(line.decode())
 
 
 def escape_umlaute(s: str) -> str:

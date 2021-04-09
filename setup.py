@@ -10,7 +10,7 @@ setuptools.setup(
     name='lwz',
     packages=setuptools.find_packages(),
     install_requires=required,
-    version='1.0.1',
+    version='2.0.0',
     author='Schachklub Langen e. V.',
     author_email='Turnierleiter@sklangen.de',
     description='CLI-Tool to manage club intern, monthly tournaments.',

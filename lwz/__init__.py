@@ -83,14 +83,14 @@ def import_dsb(directory, zps=[], pkz=[], existing=False, members=False, progres
                 players.append(p)
 
     if progress:
-        players = tqdm(players, desc='Getting dwz from dsb', ascii=True)
+        players = tqdm(players, desc='Getting data from dsb', ascii=True)
 
     for player in players:
         try:
             player.dwz = dewis.get_player_rating_at(player.id, seasonDir.season.startDate)
+            logging.debug(f'Got data for: {player}')
         except Exception:
-            logging.exception('Exception occurred whilst trying to get dwz for: ' + str(player))
-            raise
+            logging.exception(f'Exception occurred whilst trying to get data for: {player}')
 
         if members:
             players.stateOfMembership = 'MEMBER'

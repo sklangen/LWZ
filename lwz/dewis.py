@@ -80,7 +80,7 @@ def extract_date_from_tournament(tournament_id: str) -> datetime.date:
                 try:
                     return datetime.datetime.strptime(date_string, '%d.%m.%Y').date()
                 except ValueError:
-                    logging.warn(f'No valid date found for tournament id {tournament_id}. Got: ' + date_string)
+                    logging.warn(f'No valid date found for tournament id {tournament_id}, got: {date_string}')
                     return None
 
 

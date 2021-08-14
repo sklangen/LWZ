@@ -3,6 +3,7 @@ from csv import DictReader
 import calendar
 import trf
 
+
 def query_lichess_ranks(tournament_id: str, tour: trf.Tournament):
     url = f'https://lichess.org/api/swiss/{tournament_id}/results'
     for json in http_get_ndjson(url):
@@ -14,6 +15,7 @@ def query_lichess_ranks(tournament_id: str, tour: trf.Tournament):
         else:
             raise LWZException(f'No player for: {username}')
 
+
 def parse_lichess(tournament_id: str) -> trf.Tournament:
     url = f'https://lichess.org/swiss/{tournament_id}.trf'
     content = http_get(url)
@@ -24,6 +26,7 @@ def parse_lichess(tournament_id: str) -> trf.Tournament:
     tournament.players.sort(key=lambda p: p.rank)
 
     return tournament, month
+
 
 def parse_swiss(filename) -> trf.Tournament:
     with open(filename, encoding='ISO-8859-1') as f:
@@ -41,6 +44,7 @@ def parse_oldlwz(filename) -> trf.Tournament:
             points=float(row['points']),
         ) for i, row in enumerate(DictReader(f))]
     
+
     tournament = trf.Tournament(
         name=filename,
         numplayers=len(players),

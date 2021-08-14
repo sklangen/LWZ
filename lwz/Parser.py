@@ -31,8 +31,17 @@ def parse_lichess(tournament_id: str) -> trf.Tournament:
 def parse_swiss(filename) -> trf.Tournament:
     with open(filename, encoding='ISO-8859-1') as f:
         tournament = trf.load(f)
-    month = calendar.month_abbr[int(tournament.startdate.split('.')[1])]
+    month = extract_month(tournament.startdate)
     return tournament, month
+
+
+def extract_month(date: str) -> str:
+    delim = '.'
+
+    if '/' in date:
+        delim = '/'
+
+    return calendar.month_abbr[int(date.split(delim)[1])]
 
 
 def parse_oldlwz(filename) -> trf.Tournament:
@@ -43,7 +52,6 @@ def parse_oldlwz(filename) -> trf.Tournament:
             rank=i+1,
             points=float(row['points']),
         ) for i, row in enumerate(DictReader(f))]
-    
 
     tournament = trf.Tournament(
         name=filename,

@@ -93,7 +93,7 @@ def import_dsb(directory, zps=[], pkz=[], existing=False, members=False, progres
             logging.exception(f'Exception occurred whilst trying to get data for: {player}')
 
         if members:
-            players.stateOfMembership = 'MEMBER'
+            player.stateOfMembership = 'MEMBER'
         seasonDir.add_or_update_player(player)
 
     seasonDir.dump_season()

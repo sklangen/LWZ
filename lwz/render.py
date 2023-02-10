@@ -40,7 +40,7 @@ class SeasonDirectoryRenderer:
                 title=' - '.join([
                     self.mode.name,
                     self.seasonDir.season.name,
-                    format_month_date(self.seasonDir.as_date(m)) + ' oiawjd',
+                    format_month_date(self.seasonDir.as_date(m)),
                     f'{t.numrounds} Runden'
                 ]),
                 headers=self.headers + ['Punkte'],

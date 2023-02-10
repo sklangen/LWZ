@@ -38,4 +38,4 @@ def escape_umlaute(s: str) -> str:
 
 
 def format_month_date(d):
-    return format_date(d, 'MMM YYYY', locale='de_DE')
+    return format_date(d, 'MMM yyyy', locale='de_DE')

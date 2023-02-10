@@ -160,9 +160,9 @@ class SeasonDirectory:
     def _tournament_filename(self, month: str) -> str:
         return os.path.join(self.directory, self.as_date(month).strftime('%Y_%m.trf'))
 
-    def as_date(self, month: str) -> date:
-        month = calendar.month_abbr[:].index(month)
-        year = self.season.endYear if month < 5 else self.season.startYear
+    def as_date(self, monthStr: str) -> date:
+        month = calendar.month_abbr[:].index(monthStr)
+        year = self.season.startYear if month > 5 else self.season.endYear
         return date(year, month, 1)
 
     @property

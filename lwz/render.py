@@ -38,9 +38,9 @@ class SeasonDirectoryRenderer:
         for m, t in self.seasonDir.tournaments.items():
             yield m, env.get_template('player_ranking.html').render(
                 title=' - '.join([
-                    self.mode.name, 
-                    self.seasonDir.season.name, 
-                    format_month_date(self.seasonDir.as_date(m)),
+                    self.mode.name,
+                    self.seasonDir.season.name,
+                    format_month_date(self.seasonDir.as_date(m)) + ' oiawjd',
                     f'{t.numrounds} Runden'
                 ]),
                 headers=self.headers + ['Punkte'],
@@ -77,7 +77,7 @@ class SeasonDirectoryRenderer:
             if months_played:
                 score = sum(sorted((self.mode.get_score(p, t) for p, t in months_played.values()), reverse=True)[:6])
                 months = [
-                    months_played[m][0].points 
+                    months_played[m][0].points
                     if m in months_played else ''
                     for m in month_names]
 

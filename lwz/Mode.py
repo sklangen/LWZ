@@ -12,7 +12,7 @@ class Mode:
             return 'G'
         return ''
 
-    def get_score(self, player: Player, tourmanent: Tournament) -> float: 
+    def get_score(self, player: Player, tourmanent: Tournament) -> float:
         return player.points
 
     def format_score(self, score):

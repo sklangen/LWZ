@@ -162,7 +162,7 @@ class SeasonDirectory:
 
     def as_date(self, monthStr: str) -> date:
         month = calendar.month_abbr[:].index(monthStr)
-        year = self.season.startYear if month > 5 else self.season.endYear
+        year = self.season.startYear if month >= 5 else self.season.endYear
         return date(year, month, 1)
 
     @property
